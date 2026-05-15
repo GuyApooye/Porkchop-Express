@@ -4,6 +4,7 @@ import com.github.guyapooye.porkchop_express.PorkchopExpress;
 import com.github.guyapooye.porkchop_express.foundation.client.BlockEntityRenderers;
 import com.github.guyapooye.porkchop_express.foundation.client.BlockRenderTypes;
 import com.github.guyapooye.porkchop_express.neoforge.registry.PEClientExtensions;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,9 +26,10 @@ public class PEClientEvents {
         PEClientExtensions.replaceWithCustomRenderers(event.getModels());
     }
     
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        BlockRenderTypes.registerRenderTypes();
+        BlockRenderTypes.registerRenderTypes(ItemBlockRenderTypes::setRenderLayer);
     }
     
     @SubscribeEvent
