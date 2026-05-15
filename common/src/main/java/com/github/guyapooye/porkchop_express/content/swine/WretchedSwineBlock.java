@@ -15,6 +15,7 @@ import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -51,7 +52,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,7 +86,7 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.is(Tags.Items.MUSIC_DISCS)) {
+        if (stack.get(DataComponents.JUKEBOX_PLAYABLE) != null) {
             if (!level.isClientSide()) {
                 stack.consume(1, player);
                 player.addItem(PEItems.WRETCHED_DISC.get().getDefaultInstance());

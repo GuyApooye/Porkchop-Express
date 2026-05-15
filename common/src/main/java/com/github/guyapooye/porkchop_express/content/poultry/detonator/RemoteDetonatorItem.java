@@ -18,11 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3d;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 
 @MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class RemoteDetonatorItem extends Item {
     
     public RemoteDetonatorItem(Properties properties) {
