@@ -1,0 +1,82 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "porkchop_express:wretched_swine",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "mood": "happy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "porkchop_express:wretched_swine"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "porkchop_express:wretched_swine",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "mood": "hurt"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "porkchop_express:hurt_swine"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "porkchop_express:wretched_swine",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "mood": "angry"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "porkchop_express:angry_swine"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "porkchop_express:wretched_swine",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "mood": "burnt"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "porkchop_express:burnt_swine"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "porkchop_express:blocks/wretched_swine"
+}

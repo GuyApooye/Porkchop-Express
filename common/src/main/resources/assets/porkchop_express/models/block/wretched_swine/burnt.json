@@ -1,0 +1,35 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "porkchop_express:block/wretched_swine",
+		"particle": "porkchop_express:block/swine/bone"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 14, 15],
+			"faces": {
+				"north": {"uv": [8, 8, 11.5, 11.5], "texture": "#0"},
+				"east": {"uv": [12.5, 12.5, 16, 16], "texture": "#0"},
+				"south": {"uv": [12.5, 8, 16, 11.5], "texture": "#0"},
+				"west": {"uv": [16, 12.5, 12.5, 16], "texture": "#0"},
+				"up": {"uv": [11.5, 16, 8, 12.5], "texture": "#0"},
+				"down": {"uv": [16, 8, 12.5, 11.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 3, -1],
+			"to": [11, 8, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, -1, 0]},
+			"faces": {
+				"north": {"uv": [9, 9.5, 10.5, 10.75], "texture": "#0"},
+				"east": {"uv": [10.25, 11.75, 11.5, 12.25], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [11.5, 12.25, 10.25, 11.75], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [10.5, 9.75, 9, 9.25], "texture": "#0"},
+				"down": {"uv": [10.5, 9.25, 9, 9.75], "texture": "#0"}
+			}
+		}
+	]
+}

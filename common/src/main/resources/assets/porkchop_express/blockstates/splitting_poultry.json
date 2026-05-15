@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "porkchop_express:block/poultry/splitting" },
+		"facing=south": { "model": "porkchop_express:block/poultry/splitting", "y": 180 },
+		"facing=east":  { "model": "porkchop_express:block/poultry/splitting", "y": 90 },
+		"facing=west":  { "model": "porkchop_express:block/poultry/splitting", "y": 270 }
+	}
+}

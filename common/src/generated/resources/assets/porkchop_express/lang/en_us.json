@@ -1,0 +1,12 @@
+{
+  "block.porkchop_express.explosive_poultry": "Explosive Poultry",
+  "block.porkchop_express.red_poultry": "Furious Poultry",
+  "block.porkchop_express.splitting_poultry": "Splitting Poultry",
+  "item.porkchop_express.angry_swine": "Angry Swine",
+  "item.porkchop_express.burnt_swine": "Burnt Swine",
+  "item.porkchop_express.hurt_swine": "Hurt Swine",
+  "item.porkchop_express.remote_detonator": "Remote Detonator",
+  "item.porkchop_express.wretched_disc": "Wretched Music Disc",
+  "item.porkchop_express.wretched_swine": "Wretched Swine",
+  "itemGroup.porkchop_express": "The Porkchop Express"
+}
