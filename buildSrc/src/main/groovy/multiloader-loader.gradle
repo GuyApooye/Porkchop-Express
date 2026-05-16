@@ -14,7 +14,7 @@ configurations {
 dependencies {
     compileOnly(project(':common')) {
         capabilities {
-            requireCapability "$group:$mod_id"
+            requireCapability "$group:$archives_name"
         }
     }
     commonJava project(path: ':common', configuration: 'commonJava')
@@ -32,8 +32,9 @@ processResources {
 }
 
 tasks.named('javadoc', Javadoc).configure {
-    dependsOn(configurations.commonJava)
-    source(configurations.commonJava)
+    enabled = false
+//    dependsOn(configurations.commonJava)
+//    source(configurations.commonJava)
 }
 
 tasks.named('sourcesJar', Jar) {

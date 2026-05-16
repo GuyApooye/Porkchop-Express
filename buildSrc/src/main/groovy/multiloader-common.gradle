@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+    archivesName = "${archives_name}-${project.name}-${minecraft_version}"
 }
 
 java {
@@ -79,8 +79,8 @@ repositories {
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
     configurations."$variant".outgoing {
         capability("$group:${base.archivesName.get()}:$version")
-        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
-        capability("$group:$mod_id:$version")
+        capability("$group:$archives_name-${project.name}-${minecraft_version}:$version")
+        capability("$group:$archives_name:$version")
     }
     publishing.publications.configureEach {
         suppressPomMetadataWarningsFor(variant)
