@@ -68,12 +68,12 @@ public class RemoteDetonatorItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
-        stack.set(PEDataComponents.ENTITY_HOLDING, entity.getId());
+        stack.set(PEDataComponents.ENTITY_HOLDING.get(), entity.getId());
     }
     
-    @Override
-    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        stack.set(PEDataComponents.ENTITY_HOLDING, entity.getId());
-        return super.onEntityItemUpdate(stack, entity);
-    }
+//    @Override
+//    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
+//        stack.set(PEDataComponents.ENTITY_HOLDING.get(), entity.getId());
+//        return super.onEntityItemUpdate(stack, entity);
+//    }
 }

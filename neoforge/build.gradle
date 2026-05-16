@@ -3,6 +3,31 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
+dependencies {
+
+    def name = "neoforge"
+
+    def veil = "foundry.veil:veil-${name}-${minecraft_version}:${veil_version}"
+    implementation(veil) {
+        exclude group: 'maven.modrinth'
+        exclude group: 'me.fallenbreath'
+    }
+
+    def flywheelApi = "dev.engine-room.flywheel:flywheel-${name}-api-${minecraft_version}:${flywheel_version}"
+    compileOnly(flywheelApi)
+
+    def flywheel = "dev.engine-room.flywheel:flywheel-${name}-${minecraft_version}:${flywheel_version}"
+    implementation(flywheel)
+
+    def sable = "dev.ryanhcode.sable:sable-${project.name}-${minecraft_version}:${sable_version}"
+    implementation(sable) {
+        exclude group: 'foundry.veil'
+    }
+
+//    def sableCompanion = "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
+//    api(sableCompanion)
+}
+
 neoForge {
     version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists

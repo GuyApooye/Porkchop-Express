@@ -21,6 +21,28 @@ dependencies {
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+
+    def name = "neoforge"
+
+    def veil = "foundry.veil:veil-${name}-${minecraft_version}:${veil_version}"
+    implementation(veil) {
+        exclude group: 'maven.modrinth'
+        exclude group: 'me.fallenbreath'
+    }
+
+    def flywheelApi = "dev.engine-room.flywheel:flywheel-${name}-api-${minecraft_version}:${flywheel_version}"
+    compileOnly(flywheelApi)
+
+    def flywheel = "dev.engine-room.flywheel:flywheel-${name}-${minecraft_version}:${flywheel_version}"
+    implementation(flywheel)
+
+    def sable = "dev.ryanhcode.sable:sable-${project.name}-${minecraft_version}:${sable_version}"
+    implementation(sable) {
+        exclude group: 'foundry.veil'
+    }
+
+//    def sableCompanion = "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
+//    api(sableCompanion)
 }
 
 configurations {

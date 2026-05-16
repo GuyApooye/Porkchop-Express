@@ -74,33 +74,6 @@ repositories {
     }
 }
 
-dependencies {
-    def name = project.name
-    if (name.equals("common")) {
-        name = "neoforge"
-    }
-
-    def veil = "foundry.veil:veil-${name}-${minecraft_version}:${veil_version}"
-    implementation(veil) {
-        exclude group: 'maven.modrinth'
-        exclude group: 'me.fallenbreath'
-    }
-
-    def flywheelApi = "dev.engine-room.flywheel:flywheel-${name}-api-${minecraft_version}:${flywheel_version}"
-    compileOnly(flywheelApi)
-
-    def flywheel = "dev.engine-room.flywheel:flywheel-${name}-${minecraft_version}:${flywheel_version}"
-    implementation(flywheel)
-
-    def sable = "dev.ryanhcode.sable:sable-${project.name}-${minecraft_version}:${sable_version}"
-    implementation(sable) {
-        exclude group: 'foundry.veil'
-    }
-
-//    def sableCompanion = "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
-//    api(sableCompanion)
-}
-
 // Declare capabilities on the outgoing configurations.
 // Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->

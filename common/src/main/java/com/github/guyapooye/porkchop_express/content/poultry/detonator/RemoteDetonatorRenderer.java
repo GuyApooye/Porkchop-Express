@@ -32,7 +32,7 @@ public class RemoteDetonatorRenderer extends CustomItemRenderer {
             int packedOverlay
     ) {
         Minecraft minecraft = Minecraft.getInstance();
-        Integer entityId = itemStack.get(PEDataComponents.ENTITY_HOLDING);
+        Integer entityId = itemStack.get(PEDataComponents.ENTITY_HOLDING.get());
         
         float cooldownPercent = 1.0f;
         boolean hasBirdsNearby = false;

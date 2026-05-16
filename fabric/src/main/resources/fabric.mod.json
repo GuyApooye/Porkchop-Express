@@ -19,7 +19,7 @@
       "com.github.guyapooye.porkchop_express.fabric.FabricPorkchopExpress"
     ],
     "client": [
-      "com.github.guyapooye.porkchop_express.fabric.FabricPorkchopExpress$Client"
+      "com.github.guyapooye.porkchop_express.fabric.FabricPorkchopExpress\$Client"
     ],
     "fabric-datagen": [
       "com.github.guyapooye.porkchop_express.fabric.foundation.event.PECommonEvents"
