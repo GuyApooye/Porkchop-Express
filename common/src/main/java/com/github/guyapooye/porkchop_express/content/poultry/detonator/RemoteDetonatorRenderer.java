@@ -1,5 +1,6 @@
 package com.github.guyapooye.porkchop_express.content.poultry.detonator;
 
+import com.github.guyapooye.porkchop_express.PorkchopExpress;
 import com.github.guyapooye.porkchop_express.content.poultry.PoultryManager;
 import com.github.guyapooye.porkchop_express.foundation.client.item.CustomItemRenderer;
 import com.github.guyapooye.porkchop_express.registry.PEDataComponents;
@@ -9,7 +10,9 @@ import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -77,9 +80,10 @@ public class RemoteDetonatorRenderer extends CustomItemRenderer {
             mainModel = PEPartialModels.DETONATOR_MAIN_RED.get();
             buttonModel = PEPartialModels.DETONATOR_BUTTON_RED.get();
         }
-        renderModelAndFoil(itemStack, mainModel, RenderType.cutout(), poseStack, bufferSource, packedLight, packedOverlay);
+        RenderType renderType = Sheets.translucentItemSheet();
+        renderModelAndFoil(itemStack, mainModel, renderType, poseStack, bufferSource, packedLight, packedOverlay);
         poseStack.translate(0.0f, 0.0f, Math.max((1.0f-cooldownPercent)/16.0f, -0.25f));
-        renderModelAndFoil(itemStack, buttonModel, RenderType.cutout(), poseStack, bufferSource, packedLight, packedOverlay);
+        renderModelAndFoil(itemStack, buttonModel, renderType, poseStack, bufferSource, packedLight, packedOverlay);
         poseStack.popPose();
     }
     
