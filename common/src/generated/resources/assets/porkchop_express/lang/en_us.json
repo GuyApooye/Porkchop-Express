@@ -7,6 +7,7 @@
   "item.porkchop_express.hurt_swine": "Hurt Swine",
   "item.porkchop_express.remote_detonator": "Remote Detonator",
   "item.porkchop_express.wretched_disc": "Wretched Music Disc",
+  "item.porkchop_express.wretched_disc.desc": "Bad Piggies theme - Ilmari Hakkola",
   "item.porkchop_express.wretched_swine": "Wretched Swine",
   "itemGroup.porkchop_express": "The Porkchop Express"
 }

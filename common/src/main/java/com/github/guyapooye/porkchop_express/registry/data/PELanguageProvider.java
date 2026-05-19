@@ -35,6 +35,7 @@ public class PELanguageProvider extends LanguageProvider {
         ITEM_LANGS.forEach(this::addItem);
         
         this.add(PECreativeModeTab.ITEM_GROUP, "The Porkchop Express");
+        this.add("item.porkchop_express.wretched_disc.desc", "Bad Piggies theme - Ilmari Hakkola");
     }
     
     public static void addBlockTranslation(Supplier<? extends Block> block, String name) {
