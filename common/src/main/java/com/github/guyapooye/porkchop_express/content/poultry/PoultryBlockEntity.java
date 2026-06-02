@@ -2,6 +2,8 @@ package com.github.guyapooye.porkchop_express.content.poultry;
 
 import com.github.guyapooye.porkchop_express.ext.poultry.LevelPoultryExtension;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,5 +34,17 @@ public class PoultryBlockEntity extends BlockEntity {
         if (this.level != null) {
             ((LevelPoultryExtension) this.level).porkchop_express$getPoultryManager().birds.add(this.getBlockPos());
         }
+    }
+    
+    @Override
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
+        pTag.putInt("DespawnTicks", this.despawnTicks);
+    }
+    
+    @Override
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
+        this.despawnTicks = pTag.getInt("DespawnTicks");
     }
 }
