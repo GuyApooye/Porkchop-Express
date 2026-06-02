@@ -1,15 +1,22 @@
 package com.github.guyapooye.porkchop_express.content.poultry;
 
 import com.github.guyapooye.porkchop_express.registry.PEBlockEntities;
+import com.github.guyapooye.porkchop_express.registry.PESounds;
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.SubLevelAssemblyHelper;
+import dev.ryanhcode.sable.api.block.BlockWithSubLevelCollisionCallback;
+import dev.ryanhcode.sable.api.physics.callback.BlockSubLevelCollisionCallback;
+import dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle;
 import dev.ryanhcode.sable.companion.math.BoundingBox3i;
 import dev.ryanhcode.sable.companion.math.BoundingBox3ic;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
+import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Equipable;
@@ -19,6 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,7 +39,7 @@ import org.joml.Vector3d;
 
 import java.util.List;
 
-public abstract class PoultryBlock extends Block implements EntityBlock, Equipable {
+public abstract class PoultryBlock extends Block implements EntityBlock, Equipable, BlockWithSubLevelCollisionCallback {
     
     public static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 14, 15);
     
@@ -79,6 +88,20 @@ public abstract class PoultryBlock extends Block implements EntityBlock, Equipab
         }
     }
     
+    protected void blockEntityTick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity) {
+        ((PoultryBlockEntity) blockEntity).tick();
+    }
+    
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            Level pLevel,
+            BlockState pState,
+            BlockEntityType<T> pBlockEntityType
+    ) {
+        return this::blockEntityTick;
+    }
+    
     @Override
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.HEAD;
@@ -101,5 +124,13 @@ public abstract class PoultryBlock extends Block implements EntityBlock, Equipab
         return PEBlockEntities.POULTRY.get().create(blockPos, blockState);
     }
     
-    public abstract void doSomething(Level level, BlockPos block, Entity entity, Vector3d blockPos, SubLevel subLevel);
+    @Override
+    public BlockSubLevelCollisionCallback sable$getCallback() {
+        return PoultryCallback.INSTANCE;
+    }
+    
+    public void doSomething(Level level, BlockPos block, Entity entity, Vector3d blockPos, SubLevel subLevel) {
+        SoundEvent activateSound = PESounds.POULTRY_ACTIVATE.get();
+        level.playSound(null, blockPos.x, blockPos.y, blockPos.z, activateSound, SoundSource.BLOCKS, 0.8f, 1.25f);
+    }
 }

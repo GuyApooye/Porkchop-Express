@@ -9,6 +9,9 @@ public class SplittingPoultryBlockEntity extends PoultryBlockEntity {
 
     public SplittingPoultryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
+        if (blockState.getValue(SplittingPoultryBlock.CLONE)) {
+            this.despawnSoon();
+        }
     }
 
 

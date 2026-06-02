@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -83,7 +84,12 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
         Direction normal = context.getHorizontalDirection().getOpposite();
         return this.defaultBlockState().setValue(FACING, normal);
     }
-
+    
+    @Override
+    public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+        return false;
+    }
+    
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (stack.get(DataComponents.JUKEBOX_PLAYABLE) != null) {

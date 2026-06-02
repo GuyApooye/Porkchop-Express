@@ -2,31 +2,27 @@
   "thruster": {
     "sounds": ["porkchop_express:thruster"]
   },
-
   "swine_break": {
     "sounds": ["porkchop_express:swine_break"]
   },
-
   "swine_step": {
     "sounds": ["porkchop_express:swine_step"]
   },
-
   "swine_place": {
     "sounds": ["porkchop_express:swine_place"]
   },
-
   "swine_hit": {
     "sounds": ["porkchop_express:swine_hit"]
   },
-
   "swine_fall": {
     "sounds": ["porkchop_express:swine_fall"]
   },
-
   "monch": {
     "sounds": ["porkchop_express:monch"]
   },
-
+  "poultry_activate": {
+    "sounds": ["porkchop_express:poultry_activate"]
+  },
   "wretched_disc": {
     "sounds": [
       {

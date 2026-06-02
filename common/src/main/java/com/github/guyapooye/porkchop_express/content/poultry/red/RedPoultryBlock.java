@@ -22,11 +22,6 @@ public class RedPoultryBlock extends PoultryBlock {
     }
     
     @Override
-    public void doSomething(Level level, BlockPos block, Entity entity, Vector3d blockPos, SubLevel subLevel) {
-    
-    }
-    
-    @Override
     protected ItemInteractionResult useItemOn(
             ItemStack stack,
             BlockState state,

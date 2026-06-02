@@ -19,7 +19,7 @@ public final class PEBlocks {
     public static final RegistryObject<WretchedSwineBlock> SWINE = block("wretched_swine", WretchedSwineBlock::new)
             .properties(p -> p
                     .noOcclusion()
-                    .strength(1.0f, 30.0f)
+                    .strength(1.0f, 1.0f)
                     .sound(PESoundTypes.SWINE.get()))
             .renderType(() -> RenderType::cutout)
             .lootTable((block) ->

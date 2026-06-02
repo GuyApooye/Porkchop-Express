@@ -31,6 +31,9 @@ public class PESounds {
 
     public static final Supplier<SoundEvent> MONCH =
             register("monch");
+    
+    public static final Supplier<SoundEvent> POULTRY_ACTIVATE =
+            register("poultry_activate");
 
     public static final Supplier<SoundEvent> WRETCHED_DISC = register("wretched_disc");
     public static final ResourceKey<JukeboxSong> WRETCHED_DISC_KEY = createSong();

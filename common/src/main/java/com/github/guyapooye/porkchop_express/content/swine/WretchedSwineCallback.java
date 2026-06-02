@@ -5,6 +5,7 @@ import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.physics.callback.BlockSubLevelCollisionCallback;
 import dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer;
 import dev.ryanhcode.sable.api.sublevel.SubLevelContainer;
+import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import net.minecraft.core.BlockPos;
@@ -18,10 +19,6 @@ import org.joml.Vector3d;
 public class WretchedSwineCallback implements BlockSubLevelCollisionCallback {
     
     public static final WretchedSwineCallback INSTANCE = new WretchedSwineCallback();
-    
-    public double getTriggerVelocity() {
-        return 12.0;
-    }
     
     @Override
     public CollisionResult sable$onCollision(final BlockPos pos, final Vector3d hitPos, final double impactVelocity) {
@@ -39,27 +36,23 @@ public class WretchedSwineCallback implements BlockSubLevelCollisionCallback {
         }
         
         
-        final double triggerVelocity = this.getTriggerVelocity();
+        final double triggerVelocity = 8.0d;
+        final double excessiveTriggerVelocity = 16.0d;
         
-        if (impactVelocity * impactVelocity < triggerVelocity * triggerVelocity) {
-            return CollisionResult.NONE;
-        }
-        
-        ServerSubLevelContainer container = SubLevelContainer.getContainer(level);
-        assert container != null;
-        
-        SubLevel subLevel = Sable.HELPER.getContaining(level, pos);
-        
-        
-        if (this.shouldTriggerFor(state)) {
+        if (impactVelocity * impactVelocity >= excessiveTriggerVelocity * excessiveTriggerVelocity) {
+            float volume = 0.5f;
+            float pitch = level.random.nextFloat() * 0.1f;
+            SoundType soundType = PESoundTypes.SWINE.get();
+            SoundEvent sound = soundType.getPlaceSound();
+            level.destroyBlock(pos, false);
+            level.playSound(null, hitPos.x, hitPos.y, hitPos.z, sound, SoundSource.BLOCKS, volume, pitch);
+            
+            return new CollisionResult(JOMLConversion.ZERO, true);
+        } else if (impactVelocity * impactVelocity >= triggerVelocity * triggerVelocity) {
             return this.hurt(level, pos, state, hitPos, blockEntity);
         }
         
         return CollisionResult.NONE;
-    }
-    
-    public boolean shouldTriggerFor(final BlockState state) {
-        return true;
     }
     
     public CollisionResult hurt(ServerLevel level, BlockPos pos, BlockState state, Vector3d hitPos, WretchedSwineBlockEntity blockEntity) {
@@ -67,7 +60,7 @@ public class WretchedSwineCallback implements BlockSubLevelCollisionCallback {
         if (!blockEntity.shouldApplyCollision()) {
             return CollisionResult.NONE;
         }
-        blockEntity.setCollisionCooldown(20);
+        blockEntity.setCollisionCooldown(10);
         
         WretchedSwineBlock.Mood mood = state.getValue(WretchedSwineBlock.MOOD);
         BlockState newState;

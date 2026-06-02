@@ -1,6 +1,13 @@
 package com.github.guyapooye.porkchop_express.content.poultry.explosive;
 
+import com.github.guyapooye.porkchop_express.content.poultry.PoultryBlockEntity;
+import com.github.guyapooye.porkchop_express.content.poultry.PoultryCallback;
+import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.physics.callback.BlockSubLevelCollisionCallback;
+import dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer;
+import dev.ryanhcode.sable.api.sublevel.SubLevelContainer;
+import dev.ryanhcode.sable.sublevel.ServerSubLevel;
+import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -8,40 +15,28 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3d;
 
-public class ExplosivePoultryCallback implements BlockSubLevelCollisionCallback {
+public class ExplosivePoultryCallback extends PoultryCallback {
     public static final ExplosivePoultryCallback INSTANCE = new ExplosivePoultryCallback();
     
+    @Override
     public double getTriggerVelocity() {
         return 12.0;
     }
     
     @Override
-    public CollisionResult sable$onCollision(final BlockPos pos, final Vector3d hitPos, final double impactVelocity) {
-        final SubLevelPhysicsSystem system = SubLevelPhysicsSystem.getCurrentlySteppingSystem();
-        final ServerLevel level = system.getLevel();
-        
-        final BlockState state = level.getBlockState(pos);
-        
-        if (!(state.getBlock() instanceof ExplosivePoultryBlock)) {
-            return CollisionResult.NONE;
+    public CollisionResult doOnCollide(
+            BlockPos pos,
+            Vector3d hitPos,
+            double impactVelocity,
+            ServerLevel level,
+            PoultryBlockEntity blockEntity,
+            ServerSubLevel subLevel
+    ) {
+        ExplosivePoultryBlockEntity explosivePoultry = (ExplosivePoultryBlockEntity) blockEntity;
+        if (explosivePoultry.fuze < 0) {
+            explosivePoultry.setFuze(20);
         }
         
-        BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof ExplosivePoultryBlockEntity blockEntity)) {
-            return CollisionResult.NONE;
-        }
-        
-        
-        final double triggerVelocity = this.getTriggerVelocity();
-        
-        if (impactVelocity * impactVelocity < triggerVelocity * triggerVelocity) {
-            return CollisionResult.NONE;
-        }
-        
-        if (blockEntity.fuze < 0) {
-            blockEntity.setFuze(20);
-        }
-        
-        return CollisionResult.NONE;
+        return super.doOnCollide(pos, hitPos, impactVelocity, level, blockEntity, subLevel);
     }
 }

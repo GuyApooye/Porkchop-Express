@@ -56,7 +56,9 @@ public class SplittingPoultryBlock extends PoultryBlock {
             if (level.getBlockState(block).getValue(HAS_CLONED)) {
                 return;
             }
-
+            
+            super.doSomething(level, block, entity, blockPos, subLevel);
+            
             BlockState withCloned = level.getBlockState(block).setValue(HAS_CLONED, true);
             level.setBlockAndUpdate(block, withCloned);
 
@@ -69,6 +71,8 @@ public class SplittingPoultryBlock extends PoultryBlock {
             right.mul(0.5d);
             pose.set(subLevel.logicalPose());
             pose.transformNormal(right);
+            
+            withCloned = withCloned.setValue(CLONE, true);
             
             RigidBodyHandle subLevelHandle = RigidBodyHandle.of((ServerSubLevel) subLevel);
             Vector3d linearVelocity = subLevelHandle.getLinearVelocity(new Vector3d());

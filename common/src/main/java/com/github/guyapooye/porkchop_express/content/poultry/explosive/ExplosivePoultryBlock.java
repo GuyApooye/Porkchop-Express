@@ -26,43 +26,12 @@ public class ExplosivePoultryBlock extends PoultryBlock implements BlockWithSubL
     
     @Override
     public void doSomething(Level level, BlockPos block, Entity entity, Vector3d blockPos, SubLevel subLevel) {
+        super.doSomething(level, block, entity, blockPos, subLevel);
         if (level.getBlockEntity(block) instanceof ExplosivePoultryBlockEntity poultryBlockEntity) {
             if (poultryBlockEntity.fuze < 0) {
                 poultryBlockEntity.setFuze(5);
             }
         }
-    }
-    
-    public void explode(Level level, BlockPos block, Vector3d blockPos) {
-        if (level.isClientSide()) {
-            return;
-        }
-        level.removeBlock(block, false);
-        level.explode(null, blockPos.x, blockPos.y, blockPos.z, 5.0f, Level.ExplosionInteraction.MOB);
-    }
-    
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-            Level level,
-            BlockState state,
-            BlockEntityType<T> blockEntityType
-    ) {
-        return (level1, blockPos, blockState, t) -> {
-            if (t instanceof ExplosivePoultryBlockEntity poultryBlockEntity) {
-                if (poultryBlockEntity.fuze > 0) {
-                    poultryBlockEntity.fuze--;
-                    poultryBlockEntity.lastFuze = poultryBlockEntity.fuze;
-                } else if (poultryBlockEntity.fuze == 0) {
-                    SubLevel subLevel = Sable.HELPER.getContaining(level1, blockPos);
-                    Vector3d block = JOMLConversion.atCenterOf(blockPos);
-                    if (subLevel != null) {
-                        subLevel.logicalPose().transformPosition(block);
-                    }
-                    this.explode(level1, blockPos, block);
-                }
-            }
-        };
     }
     
     @Nullable
