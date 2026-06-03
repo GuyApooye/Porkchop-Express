@@ -24,4 +24,7 @@ public class ClientHoldingManager implements SubLevelObserver {
         });
     }
     
+//    public static
+
+//    public record HoldingPoint(WeakReference<ClientSubLevel>)
 }

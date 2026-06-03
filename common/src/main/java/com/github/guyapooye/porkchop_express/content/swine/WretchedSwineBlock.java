@@ -107,7 +107,7 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
     
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.isEmpty()) {
+        if (player.getWeaponItem().isEmpty()) {
             HoldUtil.hold(player, pos, level);
             return ItemInteractionResult.SUCCESS;
         }

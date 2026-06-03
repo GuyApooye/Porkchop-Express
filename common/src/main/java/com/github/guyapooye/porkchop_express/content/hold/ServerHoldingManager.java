@@ -11,6 +11,7 @@ import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.ryanhcode.sable.sublevel.storage.SubLevelRemovalReason;
 import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import foundry.veil.api.network.VeilPacketManager;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,34 +29,56 @@ import java.util.WeakHashMap;
 @ParametersAreNonnullByDefault
 public class ServerHoldingManager implements SubLevelObserver {
     
-    private final Map<SubLevel, List<Player>> holdingPlayers = new WeakHashMap<>();
-    private final Map<Player, HoldingPoint> holdingPoints = new WeakHashMap<>();
+    private final Map<SubLevel, List<ServerPlayer>> holdingPlayers = new Object2ObjectArrayMap<>();
+    private final Map<ServerPlayer, HoldingPoint> holdingPoints = new Object2ObjectArrayMap<>();
     
     public void tick() {
+        List<ServerPlayer> queuedForRemoval = new ObjectArrayList<>();
         this.holdingPoints.forEach((player, point) -> {
+            
+            if (!player.getWeaponItem().isEmpty()) {
+                queuedForRemoval.add(player);
+                return;
+            }
+            
             Vector3d constraintPos = HoldUtil.getConstraintPos(player);
             Quaterniond orientation = new Quaterniond().rotationY(-Mth.DEG_TO_RAD * player.getYRot());
             point.constraint.setFrame2(constraintPos, orientation);
             
             Vector3d blockWorldPos = point.subLevel.logicalPose().transformPosition(JOMLConversion.atCenterOf(point.heldPos));
-            if (constraintPos.distanceSquared(blockWorldPos) > 0.25d * 0.5d) {
+            double distanceSquared = constraintPos.distanceSquared(blockWorldPos);
+            if (Double.isNaN(distanceSquared) || Double.isInfinite(distanceSquared) || distanceSquared > 5.0d * 5.0d) {
+                queuedForRemoval.add(player);
+                return;
+            } else if (distanceSquared > 0.25d * 0.25d) {
                 SubLevelPhysicsSystem.get(player.level()).getPipeline().teleport(
-                        (ServerSubLevel) point.subLevel,
+                        point.subLevel,
                         constraintPos,
                         orientation
                 );
             }
         });
+        for (ServerPlayer player : queuedForRemoval) {
+            HoldingPoint held = this.getHeld(player);
+            HoldUtil.tryDrop(
+                    player,
+                    held.heldPos,
+                    player.level(),
+                    held.subLevel,
+                    this
+            );
+            this.removeHoldingPoint(player);
+        }
     }
     
     @Override
     public void onSubLevelRemoved(SubLevel subLevel, SubLevelRemovalReason reason) {
         SubLevelObserver.super.onSubLevelRemoved(subLevel, reason);
-        List<Player> players = this.holdingPlayers.remove(subLevel);
+        List<ServerPlayer> players = this.holdingPlayers.remove(subLevel);
         if (players != null) {
-            for (Player player : players) {
+            for (ServerPlayer player : players) {
                 this.holdingPoints.remove(player);
-                this.removeHoldingPoint((ServerPlayer) player);
+                this.removeHoldingPoint(player);
             }
         }
     }
@@ -65,7 +88,7 @@ public class ServerHoldingManager implements SubLevelObserver {
     }
     
     public void addHoldingPoint(ServerPlayer holder, HoldingPoint point) {
-        List<Player> players = this.holdingPlayers.computeIfAbsent(point.subLevel, k -> new ObjectArrayList<>());
+        List<ServerPlayer> players = this.holdingPlayers.computeIfAbsent(point.subLevel, k -> new ObjectArrayList<>());
         players.add(holder);
         this.holdingPoints.put(holder, point);
         
@@ -82,8 +105,7 @@ public class ServerHoldingManager implements SubLevelObserver {
             Quaterniond orientation = new Quaterniond().rotationY(-Mth.DEG_TO_RAD * holder.getYRot());
             RigidBodyHandle rigidBody = RigidBodyHandle.of((ServerSubLevel) heldPoint.subLevel);
             Vector3d linearVelocity = rigidBody.getLinearVelocity(new Vector3d()).negate();
-//            Vec3 playerVelocity = holder.getDeltaMovement();
-//            linearVelocity.add(20.0d * playerVelocity.x, 20.0d * playerVelocity.y, 20.0d * playerVelocity.z);
+//            linearVelocity.add(20.0d * (holder.getX() - holder.xo), 20.0d * (holder.getY() - holder.yo), 20.0d * (holder.getZ() - holder.zo));
 
             rigidBody.addLinearAndAngularVelocity(linearVelocity, JOMLConversion.ZERO);
             
@@ -105,7 +127,7 @@ public class ServerHoldingManager implements SubLevelObserver {
         });
     }
     
-    public record HoldingPoint(SubLevel subLevel, BlockPos heldPos, GenericConstraintHandle constraint) {
+    public record HoldingPoint(ServerSubLevel subLevel, BlockPos heldPos, GenericConstraintHandle constraint) {
     
     }
     

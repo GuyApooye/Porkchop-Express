@@ -27,8 +27,8 @@ public record HoldBlockPacket(BlockPos blockPos) implements CustomPacketPayload 
         if (level != null) {
             SubLevel subLevel = Sable.HELPER.getContaining(level, packet.blockPos);
             if (subLevel != null) {
-                ClientHoldingManager.INSTANCE.heldBlockPos = packet.blockPos;
                 ClientHoldingManager.INSTANCE.heldSubLevel = new WeakReference<>((ClientSubLevel) subLevel);
+                ClientHoldingManager.INSTANCE.heldBlockPos = packet.blockPos;
             }
         }
     };

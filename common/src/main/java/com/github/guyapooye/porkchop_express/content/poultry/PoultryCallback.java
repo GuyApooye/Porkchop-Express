@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Math;
 import org.joml.Vector3d;
 
 public class PoultryCallback implements BlockSubLevelCollisionCallback {
@@ -53,15 +54,17 @@ public class PoultryCallback implements BlockSubLevelCollisionCallback {
         }
         
         Pose3d pose = subLevel.logicalPose();
-        Vector3d dummy = new Vector3d();
-        double distanceToCOM = pose.rotationPoint().distance(JOMLConversion.atCenterOf(pos, dummy));
+        Vector3d blockCenter = JOMLConversion.atCenterOf(pos, new Vector3d());
+        double distanceToCOM = pose.rotationPoint().distance(blockCenter);
         
+        Vector3d linearVel = new Vector3d();
+        double angularVelocity = RigidBodyHandle.of(subLevel).getAngularVelocity(linearVel).length();
+        double linearVelocity = RigidBodyHandle.of(subLevel).getLinearVelocity(linearVel).length();
+        double linearVelocityAtPoint = Math.fma(distanceToCOM, angularVelocity, linearVelocity);
         
-        double angularVelocity = RigidBodyHandle.of(subLevel).getAngularVelocity(dummy).length();
-        double linearVelocity = RigidBodyHandle.of(subLevel).getLinearVelocity(dummy).length();
-        double linearVelocityAtPoint = distanceToCOM * angularVelocity + linearVelocity;
-        
-        if (linearVelocityAtPoint >= 0.5d * triggerVelocity) {
+        Vector3d centerToCollisionDir = blockCenter.sub(hitPos, new Vector3d()).normalize();
+        double velDot = linearVel.normalize().dot(centerToCollisionDir);
+        if (linearVelocityAtPoint >= 0.5d * triggerVelocity && velDot > 0.0) { // velocity and move direction of bird needs to match the collision
             return this.doOnCollide(pos, hitPos, impactVelocity, level, blockEntity, subLevel);
         }
         
