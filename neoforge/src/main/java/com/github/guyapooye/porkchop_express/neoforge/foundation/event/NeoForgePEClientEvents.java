@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 @EventBusSubscriber(modid = PorkchopExpress.MOD_ID, value = Dist.CLIENT)
-public class PEClientEvents {
+public class NeoForgePEClientEvents {
     
     @SubscribeEvent
     public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {

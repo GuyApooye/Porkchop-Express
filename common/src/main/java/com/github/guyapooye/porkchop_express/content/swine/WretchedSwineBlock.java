@@ -1,23 +1,33 @@
 package com.github.guyapooye.porkchop_express.content.swine;
 
 import com.github.guyapooye.porkchop_express.PorkchopExpress;
+import com.github.guyapooye.porkchop_express.content.hold.HoldUtil;
+import com.github.guyapooye.porkchop_express.content.hold.ServerHoldingManager;
+import com.github.guyapooye.porkchop_express.ext.hold.ServerLevelHoldExtension;
 import com.github.guyapooye.porkchop_express.registry.PEBlockEntities;
 import com.github.guyapooye.porkchop_express.registry.PEItems;
 import com.github.guyapooye.porkchop_express.registry.PESounds;
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.SubLevelAssemblyHelper;
 import dev.ryanhcode.sable.api.block.BlockWithSubLevelCollisionCallback;
+import dev.ryanhcode.sable.api.physics.PhysicsPipeline;
 import dev.ryanhcode.sable.api.physics.callback.BlockSubLevelCollisionCallback;
+import dev.ryanhcode.sable.api.physics.constraint.ConstraintJointAxis;
+import dev.ryanhcode.sable.api.physics.constraint.generic.GenericConstraintConfiguration;
+import dev.ryanhcode.sable.api.physics.constraint.generic.GenericConstraintHandle;
 import dev.ryanhcode.sable.companion.math.BoundingBox3i;
 import dev.ryanhcode.sable.companion.math.BoundingBox3ic;
+import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
+import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -51,11 +61,16 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaterniond;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -92,6 +107,10 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
     
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (stack.isEmpty()) {
+            HoldUtil.hold(player, pos, level);
+            return ItemInteractionResult.SUCCESS;
+        }
         if (stack.get(DataComponents.JUKEBOX_PLAYABLE) != null) {
             if (!level.isClientSide()) {
                 stack.consume(1, player);
@@ -114,7 +133,7 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
         
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
-
+    
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);

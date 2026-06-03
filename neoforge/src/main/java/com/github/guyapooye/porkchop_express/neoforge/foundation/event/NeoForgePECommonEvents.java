@@ -12,7 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = PorkchopExpress.MOD_ID)
-public final class PECommonEvents {
+public final class NeoForgePECommonEvents {
     
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {

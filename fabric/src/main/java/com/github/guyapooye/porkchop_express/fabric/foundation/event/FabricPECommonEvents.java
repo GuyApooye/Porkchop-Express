@@ -8,7 +8,7 @@ import net.minecraft.data.DataProvider;
 
 import java.util.concurrent.CompletableFuture;
 
-public final class PECommonEvents implements DataGeneratorEntrypoint {
+public final class FabricPECommonEvents implements DataGeneratorEntrypoint {
     
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {

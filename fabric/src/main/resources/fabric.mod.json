@@ -22,7 +22,7 @@
       "com.github.guyapooye.porkchop_express.fabric.FabricPorkchopExpress\$Client"
     ],
     "fabric-datagen": [
-      "com.github.guyapooye.porkchop_express.fabric.foundation.event.PECommonEvents"
+      "com.github.guyapooye.porkchop_express.fabric.foundation.event.FabricPECommonEvents"
     ]
   },
   "mixins": [

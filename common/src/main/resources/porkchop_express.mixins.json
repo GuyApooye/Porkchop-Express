@@ -5,6 +5,9 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
   "mixins": [
+    "hold.client.HoldClientSubLevelMixin",
+    "hold.server.HoldServerLevelMixin",
+    "hold.server.HoldServerPlayerMixin",
     "poultry.PoultryLevelChunkMixin",
     "poultry.PoultryLevelMixin"
   ],

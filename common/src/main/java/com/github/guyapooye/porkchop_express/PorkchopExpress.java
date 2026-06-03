@@ -1,5 +1,7 @@
 package com.github.guyapooye.porkchop_express;
 
+import com.github.guyapooye.porkchop_express.content.hold.ClientHoldingManager;
+import com.github.guyapooye.porkchop_express.content.hold.ServerHoldingManager;
 import com.github.guyapooye.porkchop_express.foundation.client.BlockEntityRenderers;
 import com.github.guyapooye.porkchop_express.foundation.client.BlockRenderTypes;
 import com.github.guyapooye.porkchop_express.registry.*;
@@ -21,6 +23,8 @@ public class PorkchopExpress {
         PESounds.bootstrap();
         PEPackets.bootstrap();
         PEDataComponents.bootstrap();
+        
+        ServerHoldingManager.bootstrap();
     }
     
     public static ResourceLocation id(String s) {
@@ -39,6 +43,8 @@ public class PorkchopExpress {
         
         public void clientInit() {
             PEPartialModels.bootstrap();
+            
+            ClientHoldingManager.bootstrap();
         }
         
     }
