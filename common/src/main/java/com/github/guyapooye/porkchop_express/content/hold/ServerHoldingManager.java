@@ -16,15 +16,12 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 @ParametersAreNonnullByDefault
 public class ServerHoldingManager implements SubLevelObserver {
@@ -43,7 +40,6 @@ public class ServerHoldingManager implements SubLevelObserver {
             
             Vector3d constraintPos = HoldUtil.getConstraintPos(player);
             Quaterniond orientation = new Quaterniond().rotationY(-Mth.DEG_TO_RAD * player.getYRot());
-            point.constraint.setFrame2(constraintPos, orientation);
             
             Vector3d blockWorldPos = point.subLevel.logicalPose().transformPosition(JOMLConversion.atCenterOf(point.heldPos));
             double distanceSquared = constraintPos.distanceSquared(blockWorldPos);
@@ -57,6 +53,7 @@ public class ServerHoldingManager implements SubLevelObserver {
                         orientation
                 );
             }
+            point.constraint.setFrame2(constraintPos, orientation);
         });
         for (ServerPlayer player : queuedForRemoval) {
             HoldingPoint held = this.getHeld(player);

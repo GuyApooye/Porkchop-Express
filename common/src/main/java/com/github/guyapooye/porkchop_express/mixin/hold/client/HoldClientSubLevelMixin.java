@@ -10,6 +10,7 @@ import dev.ryanhcode.sable.companion.math.Pose3dc;
 import dev.ryanhcode.sable.sublevel.ClientSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -31,8 +32,8 @@ public abstract class HoldClientSubLevelMixin extends SubLevel {
     )
     private Pose3d moveSubLevelToHolding0(Pose3d instance, Pose3dc pose, Operation<Pose3d> original) {
         original.call(instance, pose);
-        if ((Object) this == ClientHoldingManager.INSTANCE.heldSubLevel.get()) {
-            LocalPlayer player = Minecraft.getInstance().player;
+        AbstractClientPlayer player = ClientHoldingManager.getHolding((ClientSubLevel) (Object) this);
+        if (player != null) {
             Vector3d position = HoldUtil.getConstraintPos(player);
             Quaterniond orientation = new Quaterniond().rotationY(-Mth.DEG_TO_RAD * player.getYRot());
             HoldUtil.matchConstraint(instance, ClientHoldingManager.INSTANCE.heldBlockPos, position, orientation);
@@ -40,17 +41,17 @@ public abstract class HoldClientSubLevelMixin extends SubLevel {
         return instance;
     }
     
-    @WrapMethod(method = "renderPose(F)Ldev/ryanhcode/sable/companion/math/Pose3dc;")
-    private Pose3dc moveSubLevelToHolding1(float pt, Operation<Pose3dc> original) {
-        Pose3d pose = (Pose3d) original.call(pt);
-        if ((Object) this == ClientHoldingManager.INSTANCE.heldSubLevel.get()) {
-            LocalPlayer player = Minecraft.getInstance().player;
-            Vector3d position = HoldUtil.getConstraintPos(player, pt);
-            Quaterniond orientation = new Quaterniond().rotationY(-Mth.DEG_TO_RAD * player.getYRot());
-            HoldUtil.matchConstraint(pose, ClientHoldingManager.INSTANCE.heldBlockPos, position, orientation);
-        }
-        return pose;
-    }
+//    @WrapMethod(method = "renderPose(F)Ldev/ryanhcode/sable/companion/math/Pose3dc;")
+//    private Pose3dc moveSubLevelToHolding1(float pt, Operation<Pose3dc> original) {
+//        Pose3d pose = (Pose3d) original.call(pt);
+//        AbstractClientPlayer player = ClientHoldingManager.getHolding((ClientSubLevel) (Object) this);
+//        if (player != null) {
+//            Vector3d position = HoldUtil.getConstraintPos(player, pt);
+//            Quaterniond orientation = new Quaterniond().rotationY(-Mth.DEG_TO_RAD * player.getYRot());
+//            HoldUtil.matchConstraint(pose, ClientHoldingManager.INSTANCE.heldBlockPos, position, orientation);
+//        }
+//        return pose;
+//    }
     
     
 }

@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,8 +20,8 @@ public class HoldLivingEntityRendererMixin<T extends LivingEntity, M extends Ent
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;rotLerp(FFF)F", ordinal = 0)
     )
     private float holdingBodyRot(float delta, float start, float end, Operation<Float> original, @Local(argsOnly = true) T pEntity) {
-        if (pEntity instanceof LocalPlayer localPlayer) {
-            if (ClientHoldingManager.INSTANCE.heldSubLevel.get() != null) {
+        if (pEntity instanceof AbstractClientPlayer player) {
+            if (ClientHoldingManager.isHolding(player)) {
                 start = pEntity.yHeadRotO;
                 end = pEntity.yHeadRot;
             }

@@ -10,9 +10,11 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import dev.ryanhcode.sable.ActiveSableCompanion;
 import dev.ryanhcode.sable.api.math.LevelReusedVectors;
+import dev.ryanhcode.sable.sublevel.ClientSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.ryanhcode.sable.sublevel.entity_collision.SubLevelEntityCollision;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +60,7 @@ public class HoldSubLevelEntityCollisionMixin {
     
     @WrapOperation(method = "collide", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectSet;add(Ljava/lang/Object;)Z"))
     private static boolean removeCollisionFromHeldSubLevel1(ObjectSet instance, Object o, Operation<Boolean> original, @Local(argsOnly = true) Entity entity, @Share("isLocalPLayer") LocalBooleanRef isLocalPlayer) {
-        if (isLocalPlayer.get() && o == ClientHoldingManager.INSTANCE.heldSubLevel.get()) {
+        if (isLocalPlayer.get() && ClientHoldingManager.isHolding((LocalPlayer) entity, (ClientSubLevel) o)) {
             return false;
         }
         return original.call(instance, o);

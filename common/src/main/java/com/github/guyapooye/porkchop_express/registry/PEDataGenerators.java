@@ -36,6 +36,9 @@ public final class PEDataGenerators {
         
         addProvider.accept(runServer, output ->
                 new PEItemTagsProvider(output, lookupProvider));
+        
+        addProvider.accept(true, output ->
+                new PEAccessTransformerProvider(output, PorkchopExpress.MOD_ID, null));
     }
     
 }
