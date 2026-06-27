@@ -25,7 +25,8 @@ public class ExplosivePoultryCallback extends PoultryCallback {
     
     @Override
     public CollisionResult doOnCollide(
-            BlockPos pos,
+            BlockPos pos1,
+            BlockPos pos2,
             Vector3d hitPos,
             double impactVelocity,
             ServerLevel level,
@@ -37,6 +38,6 @@ public class ExplosivePoultryCallback extends PoultryCallback {
             explosivePoultry.setFuze(20);
         }
         
-        return super.doOnCollide(pos, hitPos, impactVelocity, level, blockEntity, subLevel);
+        return super.doOnCollide(pos1, pos2, hitPos, impactVelocity, level, blockEntity, subLevel);
     }
 }

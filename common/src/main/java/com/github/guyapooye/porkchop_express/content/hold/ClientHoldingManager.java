@@ -8,8 +8,8 @@ import dev.ryanhcode.sable.sublevel.ClientSubLevel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 
 public class ClientHoldingManager implements SubLevelObserver {
@@ -45,7 +45,7 @@ public class ClientHoldingManager implements SubLevelObserver {
     }
     
     public static AbstractClientPlayer getHolding(@Nullable ClientSubLevel subLevel) {
-        if (subLevel == null) {
+        if (subLevel == null || !INSTANCE.isHolding) {
             return null;
         }
         return Minecraft.getInstance().player;

@@ -1,7 +1,7 @@
 package com.github.guyapooye.porkchop_express.content.hold;
 
 import com.github.guyapooye.porkchop_express.ext.hold.ServerLevelHoldExtension;
-import dev.ryanhcode.sable.api.physics.constraint.generic.GenericConstraintHandle;
+import dev.ryanhcode.sable.api.physics.constraint.GenericConstraintHandle;
 import dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle;
 import dev.ryanhcode.sable.api.sublevel.SubLevelObserver;
 import dev.ryanhcode.sable.companion.math.JOMLConversion;
@@ -16,14 +16,13 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
 
-@ParametersAreNonnullByDefault
 public class ServerHoldingManager implements SubLevelObserver {
     
     private final Map<SubLevel, List<ServerPlayer>> holdingPlayers = new Object2ObjectArrayMap<>();
@@ -69,7 +68,7 @@ public class ServerHoldingManager implements SubLevelObserver {
     }
     
     @Override
-    public void onSubLevelRemoved(SubLevel subLevel, SubLevelRemovalReason reason) {
+    public void onSubLevelRemoved(@NotNull SubLevel subLevel, @NotNull SubLevelRemovalReason reason) {
         SubLevelObserver.super.onSubLevelRemoved(subLevel, reason);
         List<ServerPlayer> players = this.holdingPlayers.remove(subLevel);
         if (players != null) {
@@ -80,11 +79,11 @@ public class ServerHoldingManager implements SubLevelObserver {
         }
     }
    
-    public HoldingPoint getHeld(ServerPlayer holder) {
+    public HoldingPoint getHeld(@NotNull ServerPlayer holder) {
         return this.holdingPoints.get(holder);
     }
     
-    public void addHoldingPoint(ServerPlayer holder, HoldingPoint point) {
+    public void addHoldingPoint(@NotNull ServerPlayer holder, @NotNull HoldingPoint point) {
         List<ServerPlayer> players = this.holdingPlayers.computeIfAbsent(point.subLevel, k -> new ObjectArrayList<>());
         players.add(holder);
         this.holdingPoints.put(holder, point);
@@ -92,7 +91,7 @@ public class ServerHoldingManager implements SubLevelObserver {
         VeilPacketManager.player(holder).sendPacket(new HoldBlockPacket(point.heldPos));
     }
     
-    public void removeHoldingPoint(ServerPlayer holder) {
+    public void removeHoldingPoint(@NotNull ServerPlayer holder) {
         HoldingPoint heldPoint = this.holdingPoints.remove(holder);
         if (heldPoint != null) {
             this.holdingPlayers.get(heldPoint.subLevel).remove(holder);
@@ -124,7 +123,7 @@ public class ServerHoldingManager implements SubLevelObserver {
         });
     }
     
-    public record HoldingPoint(ServerSubLevel subLevel, BlockPos heldPos, GenericConstraintHandle constraint) {
+    public record HoldingPoint(@NotNull ServerSubLevel subLevel, @NotNull BlockPos heldPos, @NotNull GenericConstraintHandle constraint) {
     
     }
     

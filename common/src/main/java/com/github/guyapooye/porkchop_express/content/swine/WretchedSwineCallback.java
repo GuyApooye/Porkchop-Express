@@ -21,17 +21,17 @@ public class WretchedSwineCallback implements BlockSubLevelCollisionCallback {
     public static final WretchedSwineCallback INSTANCE = new WretchedSwineCallback();
     
     @Override
-    public CollisionResult sable$onCollision(final BlockPos pos, final Vector3d hitPos, final double impactVelocity) {
+    public CollisionResult sable$onCollision(final BlockPos pos1, final BlockPos pos2, final Vector3d hitPos, final double impactVelocity) {
         final SubLevelPhysicsSystem system = SubLevelPhysicsSystem.getCurrentlySteppingSystem();
         final ServerLevel level = system.getLevel();
         
-        final BlockState state = level.getBlockState(pos);
+        final BlockState state = level.getBlockState(pos1);
         
         if (!(state.getBlock() instanceof WretchedSwineBlock)) {
             return CollisionResult.NONE;
         }
         
-        if (!(level.getBlockEntity(pos) instanceof WretchedSwineBlockEntity blockEntity)) {
+        if (!(level.getBlockEntity(pos1) instanceof WretchedSwineBlockEntity blockEntity)) {
             return CollisionResult.NONE;
         }
         
@@ -44,12 +44,12 @@ public class WretchedSwineCallback implements BlockSubLevelCollisionCallback {
             float pitch = level.random.nextFloat() * 0.1f;
             SoundType soundType = PESoundTypes.SWINE.get();
             SoundEvent sound = soundType.getPlaceSound();
-            level.destroyBlock(pos, false);
+            level.destroyBlock(pos1, false);
             level.playSound(null, hitPos.x, hitPos.y, hitPos.z, sound, SoundSource.BLOCKS, volume, pitch);
             
             return new CollisionResult(JOMLConversion.ZERO, true);
         } else if (impactVelocity * impactVelocity >= triggerVelocity * triggerVelocity) {
-            return this.hurt(level, pos, state, hitPos, blockEntity);
+            return this.hurt(level, pos1, state, hitPos, blockEntity);
         }
         
         return CollisionResult.NONE;
@@ -73,7 +73,7 @@ public class WretchedSwineCallback implements BlockSubLevelCollisionCallback {
         switch (mood) {
             case HAPPY -> {
                 newState = state.setValue(WretchedSwineBlock.MOOD, WretchedSwineBlock.Mood.HURT);
-                level.setBlockAndUpdate(pos, newState);
+                blockEntity.replaceNextTick(newState);
                 
                 volume *= 3.0f;
                 pitch *= 0.4f;

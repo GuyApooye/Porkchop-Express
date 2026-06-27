@@ -53,6 +53,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -86,17 +87,18 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
         return this.defaultBlockState().setValue(FACING, normal);
     }
     
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+    public boolean dropFromExplosion(Explosion explosion) {
         return false;
     }
     
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (player.getWeaponItem().isEmpty()) {
-            HoldUtil.hold(player, pos, level);
-            return ItemInteractionResult.SUCCESS;
-        }
+//        if (player.getWeaponItem().isEmpty()) {
+//            HoldUtil.hold(player, pos, level);
+//            return ItemInteractionResult.SUCCESS;
+//        }
         if (stack.get(DataComponents.JUKEBOX_PLAYABLE) != null) {
             if (!level.isClientSide()) {
                 stack.consume(1, player);
@@ -143,11 +145,6 @@ public class WretchedSwineBlock extends Block implements EntityBlock, BlockWithS
             );
             level.updateNeighborsAt(pos, oldState.getBlock());
         }
-    }
-    
-    @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    
     }
     
     @Override

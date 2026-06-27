@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.LavaFluid;
+import org.jetbrains.annotations.NotNull;
 
 public class WretchedSwineBlockEntity extends BlockEntity {
     
@@ -17,6 +18,8 @@ public class WretchedSwineBlockEntity extends BlockEntity {
     private int ticksSinceFire = 0;
     private int fireTicks = 0;
     private boolean fireTickAdded = false;
+    
+    private BlockState replaceNextTick;
     
     public WretchedSwineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -29,8 +32,13 @@ public class WretchedSwineBlockEntity extends BlockEntity {
         Level level = this.getLevel();
         if (level != null) {
             
-            SubLevel subLevel = Sable.HELPER.getContaining(level, blockPos);
+            if (this.replaceNextTick != null) {
+                level.setBlockAndUpdate(this.getBlockPos(), this.replaceNextTick);
+                this.replaceNextTick = null;
+            }
             
+            SubLevel subLevel = Sable.HELPER.getContaining(level, blockPos);
+
             Sable.HELPER.runIncludingSubLevels(level, blockPos.getCenter(), false, subLevel, (subLevel0, blockPos0) -> {
                 BlockState blockState0 = level.getBlockState(blockPos0);
                 Block block = blockState0.getBlock();
@@ -41,7 +49,7 @@ public class WretchedSwineBlockEntity extends BlockEntity {
                 return null;
             });
         }
-        
+
         if (this.collisionCooldown > 0) {
             this.collisionCooldown--;
         }
@@ -91,5 +99,9 @@ public class WretchedSwineBlockEntity extends BlockEntity {
                 level.destroyBlock(blockPos, false);
             }
         }
+    }
+    
+    public void replaceNextTick(@NotNull BlockState state) {
+        this.replaceNextTick = state;
     }
 }

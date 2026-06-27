@@ -27,17 +27,17 @@ public class PoultryCallback implements BlockSubLevelCollisionCallback {
     }
     
     @Override
-    public CollisionResult sable$onCollision(final BlockPos pos, final Vector3d hitPos, final double impactVelocity) {
+    public CollisionResult sable$onCollision(final BlockPos pos1, final BlockPos pos2, final Vector3d hitPos, final double impactVelocity) {
         final SubLevelPhysicsSystem system = SubLevelPhysicsSystem.getCurrentlySteppingSystem();
         final ServerLevel level = system.getLevel();
         
-        final BlockState state = level.getBlockState(pos);
+        final BlockState state = level.getBlockState(pos1);
         
         if (!(state.getBlock() instanceof PoultryBlock)) {
             return CollisionResult.NONE;
         }
         
-        BlockEntity be = level.getBlockEntity(pos);
+        BlockEntity be = level.getBlockEntity(pos1);
         if (!(be instanceof PoultryBlockEntity blockEntity)) {
             return CollisionResult.NONE;
         }
@@ -47,14 +47,14 @@ public class PoultryCallback implements BlockSubLevelCollisionCallback {
         ServerSubLevelContainer container = SubLevelContainer.getContainer(level);
         assert container != null;
         
-        ServerSubLevel subLevel = (ServerSubLevel) Sable.HELPER.getContaining(level, pos);
+        ServerSubLevel subLevel = (ServerSubLevel) Sable.HELPER.getContaining(level, pos1);
         
         if (impactVelocity * impactVelocity < triggerVelocity * triggerVelocity || subLevel == null) {
             return CollisionResult.NONE;
         }
         
         Pose3d pose = subLevel.logicalPose();
-        Vector3d blockCenter = JOMLConversion.atCenterOf(pos, new Vector3d());
+        Vector3d blockCenter = JOMLConversion.atCenterOf(pos1, new Vector3d());
         double distanceToCOM = pose.rotationPoint().distance(blockCenter);
         
         Vector3d linearVel = new Vector3d();
@@ -65,14 +65,15 @@ public class PoultryCallback implements BlockSubLevelCollisionCallback {
         Vector3d centerToCollisionDir = blockCenter.sub(hitPos, new Vector3d()).normalize();
         double velDot = linearVel.normalize().dot(centerToCollisionDir);
         if (linearVelocityAtPoint >= 0.5d * triggerVelocity && velDot > 0.0) { // velocity and move direction of bird needs to match the collision
-            return this.doOnCollide(pos, hitPos, impactVelocity, level, blockEntity, subLevel);
+            return this.doOnCollide(pos1, pos2, hitPos, impactVelocity, level, blockEntity, subLevel);
         }
         
         return CollisionResult.NONE;
     }
     
     public CollisionResult doOnCollide(
-            BlockPos pos,
+            BlockPos pos1,
+            BlockPos pos2,
             Vector3d hitPos,
             double impactVelocity,
             ServerLevel level,
