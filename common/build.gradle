@@ -22,18 +22,18 @@ dependencies {
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
-    def name = "neoforge"
+    def loader = "neoforge"
 
-    def veil = "foundry.veil:veil-${name}-${minecraft_version}:${veil_version}"
+    def veil = "foundry.veil:veil-${loader}-${minecraft_version}:${veil_version}"
     implementation(veil) {
         exclude group: 'maven.modrinth'
         exclude group: 'me.fallenbreath'
     }
 
-    def flywheelApi = "dev.engine-room.flywheel:flywheel-${name}-api-${minecraft_version}:${flywheel_version}"
+    def flywheelApi = "dev.engine-room.flywheel:flywheel-${loader}-api-${minecraft_version}:${flywheel_version}"
     compileOnly(flywheelApi)
 
-    def flywheel = "dev.engine-room.flywheel:flywheel-${name}-${minecraft_version}:${flywheel_version}"
+    def flywheel = "dev.engine-room.flywheel:flywheel-${loader}-${minecraft_version}:${flywheel_version}"
     implementation(flywheel)
 
     def sable = "dev.ryanhcode.sable:sable-${project.name}-${minecraft_version}:${sable_version}"

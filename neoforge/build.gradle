@@ -5,24 +5,29 @@ plugins {
 
 dependencies {
 
-    def name = "neoforge"
+    def loader = "neoforge"
 
-    def veil = "foundry.veil:veil-${name}-${minecraft_version}:${veil_version}"
+    def veil = "foundry.veil:veil-${loader}-${minecraft_version}:${veil_version}"
     implementation(veil) {
         exclude group: 'maven.modrinth'
         exclude group: 'me.fallenbreath'
     }
 
-    def flywheelApi = "dev.engine-room.flywheel:flywheel-${name}-api-${minecraft_version}:${flywheel_version}"
+    def flywheelApi = "dev.engine-room.flywheel:flywheel-${loader}-api-${minecraft_version}:${flywheel_version}"
     compileOnly(flywheelApi)
 
-    def flywheel = "dev.engine-room.flywheel:flywheel-${name}-${minecraft_version}:${flywheel_version}"
+    def flywheel = "dev.engine-room.flywheel:flywheel-${loader}-${minecraft_version}:${flywheel_version}"
     implementation(flywheel)
 
     def sable = "dev.ryanhcode.sable:sable-${project.name}-${minecraft_version}:${sable_version}"
     implementation(sable) {
         exclude group: 'foundry.veil'
     }
+
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-${loader}:${jei_version}")
+    runtimeOnly("dev.simulated_team.simulated:simulated-${loader}-${minecraft_version}:${simulated_version}")
+    runtimeOnly("dev.eriksonn.aeronautics:aeronautics-${loader}-${minecraft_version}:${simulated_version}")
+    runtimeOnly("dev.ryanhcode.offroad:offroad-${loader}-${minecraft_version}:${simulated_version}")
 
 //    def sableCompanion = "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
 //    api(sableCompanion)

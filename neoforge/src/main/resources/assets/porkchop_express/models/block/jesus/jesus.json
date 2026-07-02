@@ -1,0 +1,11 @@
+{
+	"parent": "block/block",
+	"loader": "neoforge:obj",
+	"flip_v": true,
+	"mtl_override": "porkchop_express:models/block/jesus/jesus.mtl",
+	"model": "porkchop_express:models/block/jesus/jesusmodel.obj",
+	"textures": {
+		"jesushchrist": "porkchop_express:block/jesushchrist",
+		"particle": "porkchop_express:block/jesushchrist"
+	}
+}

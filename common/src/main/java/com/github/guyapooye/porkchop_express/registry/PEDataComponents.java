@@ -8,7 +8,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 
-public class PEDataComponents {
+public final class PEDataComponents {
     
     public static final RegistrationProvider<DataComponentType<?>> DATA_COMPONENT_TYPES = RegistrationProvider.get(
             Registries.DATA_COMPONENT_TYPE, PorkchopExpress.MOD_ID
@@ -23,6 +23,8 @@ public class PEDataComponents {
     );
     
     public static void bootstrap() {
+    }
     
+    private PEDataComponents() {
     }
 }

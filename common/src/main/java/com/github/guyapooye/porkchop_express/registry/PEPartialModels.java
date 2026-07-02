@@ -5,7 +5,7 @@ import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 
-public class PEPartialModels {
+public final class PEPartialModels {
 
     public static final PartialModel
             DETONATOR_MAIN_RED = item("remote_detonator/main_red"),
@@ -13,10 +13,7 @@ public class PEPartialModels {
             DETONATOR_BUTTON_RED = item("remote_detonator/button_red"),
             DETONATOR_BUTTON_GREEN = item("remote_detonator/button_green")
     ;
-
-    private PEPartialModels() {
-    }
-
+    
     private static PartialModel block(String path) {
         return PartialModel.of(ResourceLocation.fromNamespaceAndPath(PorkchopExpress.MOD_ID, "block/" + path));
     }
@@ -25,6 +22,9 @@ public class PEPartialModels {
         return PartialModel.of(ResourceLocation.fromNamespaceAndPath(PorkchopExpress.MOD_ID, "item/" + path));
     }
 
+    private PEPartialModels() {
+    }
+    
     @ApiStatus.Internal
     public static void bootstrap() {
     }

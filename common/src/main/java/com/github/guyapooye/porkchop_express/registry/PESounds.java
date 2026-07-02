@@ -10,7 +10,7 @@ import net.minecraft.world.item.JukeboxSong;
 
 import java.util.function.Supplier;
 
-public class PESounds {
+public final class PESounds {
 
     public static final RegistrationProvider<SoundEvent> SOUND_EVENTS = RegistrationProvider.get(BuiltInRegistries.SOUND_EVENT, PorkchopExpress.MOD_ID);
     
@@ -37,7 +37,10 @@ public class PESounds {
 
     public static final Supplier<SoundEvent> WRETCHED_DISC = register("wretched_disc");
     public static final ResourceKey<JukeboxSong> WRETCHED_DISC_KEY = createSong();
-
+    
+    private PESounds() {
+    }
+    
     private static ResourceKey<JukeboxSong> createSong() {
         return ResourceKey.create(Registries.JUKEBOX_SONG, PorkchopExpress.id("wretched_disc"));
     }

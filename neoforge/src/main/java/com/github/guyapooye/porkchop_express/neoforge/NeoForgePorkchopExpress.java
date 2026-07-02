@@ -4,6 +4,7 @@ package com.github.guyapooye.porkchop_express.neoforge;
 import com.github.guyapooye.porkchop_express.PorkchopExpress;
 import com.github.guyapooye.porkchop_express.foundation.client.BlockRenderTypes;
 import com.github.guyapooye.porkchop_express.foundation.client.BlockEntityRenderers;
+import com.github.guyapooye.porkchop_express.neoforge.registry.NeoForgePEBlocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,6 +18,7 @@ public final class NeoForgePorkchopExpress extends PorkchopExpress {
     
     public NeoForgePorkchopExpress(IEventBus eventBus) {
         this.init();
+        NeoForgePEBlocks.bootstrap();
     }
     
     @Mod(value = PorkchopExpress.MOD_ID, dist = Dist.CLIENT)

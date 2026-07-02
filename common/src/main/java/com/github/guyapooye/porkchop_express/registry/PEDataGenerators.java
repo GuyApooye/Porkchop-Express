@@ -41,4 +41,7 @@ public final class PEDataGenerators {
                 new PEAccessTransformerProvider(output, PorkchopExpress.MOD_ID, null));
     }
     
+    private PEDataGenerators() {
+    }
+    
 }

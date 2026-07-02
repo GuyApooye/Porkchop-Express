@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.SoundType;
 
 import java.util.function.Supplier;
 
-public class PESoundTypes {
+public final class PESoundTypes {
 
     public static final Supplier<SoundType> SWINE = Suppliers.memoize(() -> new SoundType(
             1.0F,
@@ -16,4 +16,7 @@ public class PESoundTypes {
             PESounds.SWINE_HIT.get(),
             PESounds.SWINE_FALL.get()
     ));
+    
+    private PESoundTypes() {
+    }
 }

@@ -58,11 +58,13 @@ public class PoultryCallback implements BlockSubLevelCollisionCallback {
         double distanceToCOM = pose.rotationPoint().distance(blockCenter);
         
         Vector3d linearVel = new Vector3d();
-        double angularVelocity = RigidBodyHandle.of(subLevel).getAngularVelocity(linearVel).length();
-        double linearVelocity = RigidBodyHandle.of(subLevel).getLinearVelocity(linearVel).length();
+        // FIXME: dont use the shitty latest linear/anglar velocities
+        double angularVelocity = subLevel.latestAngularVelocity.length(); // i hate this i hate this i hate this
+        double linearVelocity = linearVel.set(subLevel.latestLinearVelocity).length(); // i hate this i hate this i hate this
         double linearVelocityAtPoint = Math.fma(distanceToCOM, angularVelocity, linearVelocity);
         
-        Vector3d centerToCollisionDir = blockCenter.sub(hitPos, new Vector3d()).normalize();
+        Vector3d centerToCollisionDir = hitPos.sub(blockCenter, new Vector3d()).normalize();
+        pose.transformNormal(centerToCollisionDir);
         double velDot = linearVel.normalize().dot(centerToCollisionDir);
         if (linearVelocityAtPoint >= 0.5d * triggerVelocity && velDot > 0.0) { // velocity and move direction of bird needs to match the collision
             return this.doOnCollide(pos1, pos2, hitPos, impactVelocity, level, blockEntity, subLevel);

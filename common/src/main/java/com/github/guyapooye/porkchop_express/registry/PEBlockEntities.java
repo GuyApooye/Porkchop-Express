@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class PEBlockEntities {
+public final class PEBlockEntities {
     
     public static final RegistrationProvider<BlockEntityType<?>> BLOCKS_ENTITY_TYPES = RegistrationProvider.get(Registries.BLOCK_ENTITY_TYPE, PorkchopExpress.MOD_ID);
     public static final Registry<BlockEntityType<?>> REGISTRY = BLOCKS_ENTITY_TYPES.asVanillaRegistry();
@@ -44,6 +44,9 @@ public class PEBlockEntities {
 
     private static <BE extends BlockEntity> BlockEntityBuilder<BE> blockEntity(String name, TriFunction<BlockEntityType<BE>, BlockPos, BlockState, BE> factory) {
         return new BlockEntityBuilder<>(name, factory);
+    }
+    
+    private PEBlockEntities() {
     }
     
 }

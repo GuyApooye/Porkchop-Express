@@ -13,7 +13,7 @@ import net.minecraft.world.item.Rarity;
 
 import java.util.function.Function;
 
-public class PEItems {
+public final class PEItems {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, PorkchopExpress.MOD_ID);
     public static final Registry<Item> REGISTRY = ITEMS.asVanillaRegistry();
     
@@ -34,6 +34,9 @@ public class PEItems {
     
     private static <I extends Item> ItemBuilder<I> item(String name, Function<Item.Properties, I> factory) {
         return new ItemBuilder<>(name, factory);
+    }
+    
+    private PEItems() {
     }
     
 }

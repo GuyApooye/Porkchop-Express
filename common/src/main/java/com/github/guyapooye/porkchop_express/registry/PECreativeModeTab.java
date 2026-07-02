@@ -38,4 +38,7 @@ public final class PECreativeModeTab {
     
     public static void bootstrap() {
     }
+    
+    private PECreativeModeTab() {
+    }
 }

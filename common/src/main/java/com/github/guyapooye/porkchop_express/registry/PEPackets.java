@@ -19,4 +19,7 @@ public final class PEPackets {
         
     }
     
+    private PEPackets() {
+    }
+    
 }

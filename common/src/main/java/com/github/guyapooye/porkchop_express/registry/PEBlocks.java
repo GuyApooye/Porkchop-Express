@@ -72,4 +72,7 @@ public final class PEBlocks {
     public static void bootstrap() {
     
     }
+    
+    private PEBlocks() {
+    }
 }
